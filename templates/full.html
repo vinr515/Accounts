@@ -43,7 +43,7 @@ function removeCards(){
 }
 function printData(){
 	if(checkData()){
-		//outputData();
+		outputData();
 	}
 }
 
@@ -59,7 +59,8 @@ function checkData(){
 		alert("Date is After Today");
 		return false;
 	}
-	if(document.getElementById("cardName").value == ""){
+	var cardName = document.getElementById("cardName").value;
+	if(cardName == "" && getPayMethod() != "Cash"){
 		alert("Wrong Card Name");
 		return false;
 	}
@@ -73,6 +74,32 @@ function checkData(){
 	}
 	return true;
 }
+
+function outputData(){
+	var date = document.getElementById("purchaseDate").value;
+	var type = getPayMethod();
+	var card = document.getElementById("cardName").value;
+	if(type == "Cash"){
+		card = "No Card";
+	}
+	var amount = document.getElementById("amount").value;
+	var descrp = document.getElementById("description").value;
+	var categ = document.getElementById("category").value;
+	
+	var line = "Date: "["concat"](date, "\nType: ", type);
+	line = line["concat"]("\nCard: ",card, "\nAmount: ", amount);
+	line = line["concat"]("\nDescription: ", descrp, "\nCategory: ", categ);
+	alert(line);
+}
+
+function getPayMethod(){
+	var methods = ['Cash', 'Check', 'Credit', 'Debit'];
+	for(i of methods){
+		if(document.getElementById(i).checked){
+			return i;
+		}
+	}
+}
 </script>
 </head>
 
@@ -82,10 +109,10 @@ function checkData(){
 	</br>
 
 	<label for="type">Type</label>
-	<input type="radio" id="type" name="type" value="Cash" onchange="payCash();">Cash
-	<input type="radio" id="type" name="type" value="Check" onchange="payCheck();" checked>Check
-	<input type="radio" id="type" name="type" value="Credit" onchange="payCredit();">Credit
-	<input type="radio" id="type" name="type" value="Debit" onchange="payDebit();">Debit
+	<input type="radio" id="Cash" name="type" value="Cash" onchange="payCash();">Cash
+	<input type="radio" id="Check" name="type" value="Check" onchange="payCheck();" checked>Check
+	<input type="radio" id="Credit" name="type" value="Credit" onchange="payCredit();">Credit
+	<input type="radio" id="Debit" name="type" value="Debit" onchange="payDebit();">Debit
 	</br>
 
 	<label for="cardName" id="cardLabel">Check Bank</label>
@@ -101,8 +128,7 @@ function checkData(){
 	</br></br></br>
 
 	<label for="description">Description</label>
-	<textarea id="description" name="description" rows="5", cols="50">
-	</textarea>
+	<textarea id="description" name="description" rows="5", cols="50"></textarea>
 	</br>
 	
 	<label for="category">Category</label>
