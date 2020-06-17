@@ -5,38 +5,78 @@ function payCash(){
 	document.getElementById("cardName").disabled = true;
 }
 function payCheck(){
-	var newTypes = ['AA', 'BB'];
+	var newTypes = ['', 'AA', 'BB'];
 	document.getElementById("cardName").disabled = false;
 	replaceCards(newTypes);
-	
-	alert("Check");
+	renameLabel("Check Bank");
 }
 function payCredit(){
-	alert("Credit");
 	var newTypes = ['', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ'];
 	document.getElementById("cardName").disabled = false;
 	replaceCards(newTypes);
+	renameLabel("Credit Card");
 }
 function payDebit(){
-	alert("Debit");
 	var newTypes = ['HH']
 	document.getElementById("cardName").disabled = false;
 	replaceCards(newTypes);
+	renameLabel("Debit Card");
 }
 
 function replaceCards(newTypes){
-	document.getElementById("cardName").empty()
+	var cardBox = document.getElementById("cardName");
+	removeCards();
 	for(i=0; i < newTypes.length; i++){
 		var newCard = document.createElement("option");
 		newCard.text = newTypes[i];
 		newCard.value = newTypes[i];
-		document.getElementById("cardName").add(newCard, null);
+		cardBox.add(newCard, null);
 	}
+}
+
+function removeCards(){
+	var cardBox = document.getElementById("cardName");
+	var length = cardBox.options.length;
+	for(i=length; i >= 0; i--){
+		cardBox.remove(i);
+	}
+}
+function printData(){
+	if(checkData()){
+		//outputData();
+	}
+}
+
+function checkData(){
+	var purchDate = document.getElementById("purchaseDate").value;
+	if(purchDate == ""){
+		alert("Wrong Date");
+		return false;
+	}
+	var d = new Date();
+	var dateString = d.toISOString()["slice"](0, 10);
+	if(dateString < purchDate){
+		alert("Date is After Today");
+		return false;
+	}
+	if(document.getElementById("cardName").value == ""){
+		alert("Wrong Card Name");
+		return false;
+	}
+	if(document.getElementById("amount").value == ""){
+		alert("Wrong Amount");
+		return false;
+	}
+	if(document.getElementById("category").value == ""){
+		alert("Wrong Category");
+		return false;
+	}
+	return true;
 }
 </script>
 </head>
 
-<body>
+<body onload="setCategories();">
 	<label for="purchaseDate">Date</label> 
 	<input type="date" id="purchaseDate" name="purchaseDate">
 	</br>
@@ -48,7 +88,7 @@ function replaceCards(newTypes){
 	<input type="radio" id="type" name="type" value="Debit" onchange="payDebit();">Debit
 	</br>
 
-	<label for="cardName" id="cardLabel">Card Name</label>
+	<label for="cardName" id="cardLabel">Check Bank</label>
 	<select id="cardName">
 		<option value=""></option>
 		<option value="AA">AA</option>
@@ -64,6 +104,30 @@ function replaceCards(newTypes){
 	<textarea id="description" name="description" rows="5", cols="50">
 	</textarea>
 	</br>
+	
+	<label for="category">Category</label>
+	<select id="category">
+	</select>
+	</br>
+	
+	<button onclick="printData();">Enter</button>
+	
+	<script language="Javascript">
+		function renameLabel(newText){
+			document.getElementById("cardLabel").innerHTML = newText;
+		}
+		
+		function setCategories(){
+			var categories = ['', 'A','B','C','D','E','F','G','H','I']
+			var catBox = document.getElementById("category");
+			for(i=0; i < categories.length; i++){
+				var newCat = document.createElement("option");
+				newCat.text = categories[i];
+				newCat.value = categories[i];
+				catBox.add(newCat, null);
+			}
+		}
+	</script>
 
 </body>
 </html>
