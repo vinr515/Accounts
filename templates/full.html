@@ -2,23 +2,20 @@
 <head>
 	<script language="Javascript">
 		function payCash(){
-			document.getElementById("cardName").disabled = true;
+			replaceCards(['No Card (Cash)']);
 		}
 		function payCheck(){
 			var newTypes = ['', 'AA', 'BB'];
-			document.getElementById("cardName").disabled = false;
 			replaceCards(newTypes);
 			renameLabel("Check Bank");
 		}
 		function payCredit(){
 			var newTypes = ['', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ'];
-			document.getElementById("cardName").disabled = false;
 			replaceCards(newTypes);
 			renameLabel("Credit Card");
 		}
 		function payDebit(){
 			var newTypes = ['', 'HH']
-			document.getElementById("cardName").disabled = false;
 			replaceCards(newTypes);
 			renameLabel("Debit Card");
 		}
@@ -81,7 +78,7 @@
 			var type = getPayMethod();
 			var card = document.getElementById("cardName").value;
 			if(type == "Cash"){
-				card = "No Card";
+				card = "No Card (Cash)";
 			}
 			var amount = document.getElementById("amount").value;
 			var descrp = document.getElementById("description").value;
@@ -105,39 +102,41 @@
 </head>
 
 <body onload="setCategories();">
-	<label for="purchaseDate">Date</label> 
-	<input type="date" id="purchaseDate" name="purchaseDate">
-	</br>
+	<form action="/newpage" method="post">
+		<label for="purchaseDate">Date</label> 
+		<input type="date" id="purchaseDate" name="purchaseDate">
+		</br>
 
-	<label for="type">Type</label>
-	<input type="radio" id="Cash" name="type" value="Cash" onchange="payCash();">Cash
-	<input type="radio" id="Check" name="type" value="Check" onchange="payCheck();" checked>Check
-	<input type="radio" id="Credit" name="type" value="Credit" onchange="payCredit();">Credit
-	<input type="radio" id="Debit" name="type" value="Debit" onchange="payDebit();">Debit
-	</br>
+		<label for="type">Type</label>
+		<input type="radio" id="Cash" name="type" value="Cash" onchange="payCash();">Cash
+		<input type="radio" id="Check" name="type" value="Check" onchange="payCheck();" checked>Check
+		<input type="radio" id="Credit" name="type" value="Credit" onchange="payCredit();">Credit
+		<input type="radio" id="Debit" name="type" value="Debit" onchange="payDebit();">Debit
+		</br>
 
-	<label for="cardName" id="cardLabel">Check Bank</label>
-	<select id="cardName">
-		<option value=""></option>
-		<option value="AA">AA</option>
-		<option value="BB">BB</option>
-	</select>
-	</br>
-	
-	<label for="amount">Amount</label>
-	<input type="number" id="amount" name="amount" step=".01">
-	</br></br></br>
+		<label for="cardName" id="cardLabel">Check Bank</label>
+		<select id="cardName" name="cardName">
+			<option value=""></option>
+			<option value="AA">AA</option>
+			<option value="BB">BB</option>
+		</select>
+		</br>
+		
+		<label for="amount">Amount</label>
+		<input type="number" id="amount" name="amount" step=".01">
+		</br></br></br>
 
-	<label for="description">Description</label>
-	<textarea id="description" name="description" rows="5", cols="50"></textarea>
-	</br>
-	
-	<label for="category">Category</label>
-	<select id="category">
-	</select>
-	</br>
-	
-	<button onclick="printData();">Enter</button>
+		<label for="description">Description</label>
+		<textarea id="description" name="description" rows="5", cols="50"></textarea>
+		</br>
+		
+		<label for="category">Category</label>
+		<select id="category" name="category">
+		</select>
+		</br>
+		
+		<button onclick="printData();" type="submit">Enter</button>
+	</form>
 	
 	<script language="Javascript">
 		function renameLabel(newText){
