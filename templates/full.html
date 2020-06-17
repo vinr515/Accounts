@@ -1,106 +1,107 @@
 <html>
 <head>
-<script language="Javascript">
-function payCash(){
-	document.getElementById("cardName").disabled = true;
-}
-function payCheck(){
-	var newTypes = ['', 'AA', 'BB'];
-	document.getElementById("cardName").disabled = false;
-	replaceCards(newTypes);
-	renameLabel("Check Bank");
-}
-function payCredit(){
-	var newTypes = ['', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ'];
-	document.getElementById("cardName").disabled = false;
-	replaceCards(newTypes);
-	renameLabel("Credit Card");
-}
-function payDebit(){
-	var newTypes = ['HH']
-	document.getElementById("cardName").disabled = false;
-	replaceCards(newTypes);
-	renameLabel("Debit Card");
-}
-
-function replaceCards(newTypes){
-	var cardBox = document.getElementById("cardName");
-	removeCards();
-	for(i=0; i < newTypes.length; i++){
-		var newCard = document.createElement("option");
-		newCard.text = newTypes[i];
-		newCard.value = newTypes[i];
-		cardBox.add(newCard, null);
-	}
-}
-
-function removeCards(){
-	var cardBox = document.getElementById("cardName");
-	var length = cardBox.options.length;
-	for(i=length; i >= 0; i--){
-		cardBox.remove(i);
-	}
-}
-function printData(){
-	if(checkData()){
-		outputData();
-	}
-}
-
-function checkData(){
-	var purchDate = document.getElementById("purchaseDate").value;
-	if(purchDate == ""){
-		alert("Wrong Date");
-		return false;
-	}
-	var d = new Date();
-	var dateString = d.toISOString()["slice"](0, 10);
-	if(dateString < purchDate){
-		alert("Date is After Today");
-		return false;
-	}
-	var cardName = document.getElementById("cardName").value;
-	if(cardName == "" && getPayMethod() != "Cash"){
-		alert("Wrong Card Name");
-		return false;
-	}
-	if(document.getElementById("amount").value == ""){
-		alert("Wrong Amount");
-		return false;
-	}
-	if(document.getElementById("category").value == ""){
-		alert("Wrong Category");
-		return false;
-	}
-	return true;
-}
-
-function outputData(){
-	var date = document.getElementById("purchaseDate").value;
-	var type = getPayMethod();
-	var card = document.getElementById("cardName").value;
-	if(type == "Cash"){
-		card = "No Card";
-	}
-	var amount = document.getElementById("amount").value;
-	var descrp = document.getElementById("description").value;
-	var categ = document.getElementById("category").value;
-	
-	var line = "Date: "["concat"](date, "\nType: ", type);
-	line = line["concat"]("\nCard: ",card, "\nAmount: ", amount);
-	line = line["concat"]("\nDescription: ", descrp, "\nCategory: ", categ);
-	alert(line);
-}
-
-function getPayMethod(){
-	var methods = ['Cash', 'Check', 'Credit', 'Debit'];
-	for(i of methods){
-		if(document.getElementById(i).checked){
-			return i;
+	<script language="Javascript">
+		function payCash(){
+			document.getElementById("cardName").disabled = true;
 		}
-	}
-}
-</script>
+		function payCheck(){
+			var newTypes = ['', 'AA', 'BB'];
+			document.getElementById("cardName").disabled = false;
+			replaceCards(newTypes);
+			renameLabel("Check Bank");
+		}
+		function payCredit(){
+			var newTypes = ['', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ'];
+			document.getElementById("cardName").disabled = false;
+			replaceCards(newTypes);
+			renameLabel("Credit Card");
+		}
+		function payDebit(){
+			var newTypes = ['', 'HH']
+			document.getElementById("cardName").disabled = false;
+			replaceCards(newTypes);
+			renameLabel("Debit Card");
+		}
+
+		function replaceCards(newTypes){
+			var cardBox = document.getElementById("cardName");
+			removeCards();
+			for(i=0; i < newTypes.length; i++){
+				var newCard = document.createElement("option");
+				newCard.text = newTypes[i];
+				newCard.value = newTypes[i];
+				cardBox.add(newCard, null);
+			}
+		}
+
+		function removeCards(){
+			var cardBox = document.getElementById("cardName");
+			var length = cardBox.options.length;
+			for(i=length; i >= 0; i--){
+				cardBox.remove(i);
+			}
+		}
+		function printData(){
+			if(checkData()){
+				outputData();
+			}
+		}
+
+		function checkData(){
+			var purchDate = document.getElementById("purchaseDate").value;
+			if(purchDate == ""){
+				alert("Wrong Date");
+				return false;
+			}
+			var d = new Date();
+			var dateString = d.toISOString()["slice"](0, 10);
+			if(dateString < purchDate){
+				alert("Date is After Today");
+				return false;
+			}
+			var cardName = document.getElementById("cardName").value;
+			if(cardName == "" && getPayMethod() != "Cash"){
+				alert("Wrong Card Name");
+				return false;
+			}
+			var money = document.getElementById("amount").value;
+			if(money == "" || parseFloat(money) < 0){
+				alert("Wrong Amount");
+				return false;
+			}
+			if(document.getElementById("category").value == ""){
+				alert("Wrong Category");
+				return false;
+			}
+			return true;
+		}
+
+		function outputData(){
+			var date = document.getElementById("purchaseDate").value;
+			var type = getPayMethod();
+			var card = document.getElementById("cardName").value;
+			if(type == "Cash"){
+				card = "No Card";
+			}
+			var amount = document.getElementById("amount").value;
+			var descrp = document.getElementById("description").value;
+			var categ = document.getElementById("category").value;
+			
+			var line = "Date: "["concat"](date, "\nType: ", type);
+			line = line["concat"]("\nCard: ",card, "\nAmount: ", amount);
+			line = line["concat"]("\nDescription: ", descrp, "\nCategory: ", categ);
+			alert(line);
+		}
+
+		function getPayMethod(){
+			var methods = ['Cash', 'Check', 'Credit', 'Debit'];
+			for(i of methods){
+				if(document.getElementById(i).checked){
+					return i;
+				}
+			}
+		}
+	</script>
 </head>
 
 <body onload="setCategories();">
