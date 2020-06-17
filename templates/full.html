@@ -38,71 +38,14 @@
 				cardBox.remove(i);
 			}
 		}
-		function printData(){
-			if(checkData()){
-				outputData();
-			}
-		}
-
-		function checkData(){
-			var purchDate = document.getElementById("purchaseDate").value;
-			if(purchDate == ""){
-				alert("Wrong Date");
-				return false;
-			}
-			var d = new Date();
-			var dateString = d.toISOString()["slice"](0, 10);
-			if(dateString < purchDate){
-				alert("Date is After Today");
-				return false;
-			}
-			var cardName = document.getElementById("cardName").value;
-			if(cardName == "" && getPayMethod() != "Cash"){
-				alert("Wrong Card Name");
-				return false;
-			}
-			var money = document.getElementById("amount").value;
-			if(money == "" || parseFloat(money) < 0){
-				alert("Wrong Amount");
-				return false;
-			}
-			if(document.getElementById("category").value == ""){
-				alert("Wrong Category");
-				return false;
-			}
-			return true;
-		}
-
-		function outputData(){
-			var date = document.getElementById("purchaseDate").value;
-			var type = getPayMethod();
-			var card = document.getElementById("cardName").value;
-			if(type == "Cash"){
-				card = "No Card (Cash)";
-			}
-			var amount = document.getElementById("amount").value;
-			var descrp = document.getElementById("description").value;
-			var categ = document.getElementById("category").value;
-			
-			var line = "Date: "["concat"](date, "\nType: ", type);
-			line = line["concat"]("\nCard: ",card, "\nAmount: ", amount);
-			line = line["concat"]("\nDescription: ", descrp, "\nCategory: ", categ);
-			alert(line);
-		}
-
-		function getPayMethod(){
-			var methods = ['Cash', 'Check', 'Credit', 'Debit'];
-			for(i of methods){
-				if(document.getElementById(i).checked){
-					return i;
-				}
-			}
-		}
 	</script>
 </head>
 
 <body onload="setCategories();">
-	<form action="/newpage" method="post">
+	{% if error %}
+		Error: {{ error }}
+	{% endif %}
+	<form action="/newPurchase" method="post">
 		<label for="purchaseDate">Date</label> 
 		<input type="date" id="purchaseDate" name="purchaseDate">
 		</br>
@@ -127,7 +70,7 @@
 		</br></br></br>
 
 		<label for="description">Description</label>
-		<textarea id="description" name="description" rows="5", cols="50"></textarea>
+		<textarea id="description" name="description" rows="5" cols="50"></textarea>
 		</br>
 		
 		<label for="category">Category</label>
@@ -135,7 +78,7 @@
 		</select>
 		</br>
 		
-		<button onclick="printData();" type="submit">Enter</button>
+		<button type="submit">Enter</button>
 	</form>
 	
 	<script language="Javascript">
