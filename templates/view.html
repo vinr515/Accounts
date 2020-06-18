@@ -3,6 +3,9 @@
 </head>
 
 <body>
+	{% if error %}
+		Error: {{ error }}
+	{% endif %}
 	<form action="/chart" method="POST">
 		<label for="startDate">From: </label>
 		<input type="date" id="startDate" name="startDate">

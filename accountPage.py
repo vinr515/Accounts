@@ -16,8 +16,9 @@ app = Flask(__name__)
 def account_page():
     if(len(ERROR_CODE['account']) == 0):
         return render_template("full.html")
+    code = ERROR_CODE['account'][0]
     ERROR_CODE['account'].clear()
-    return render_template("full.html", error=ERROR_CODE['account'][0])
+    return render_template("full.html", error=code)
 
 @app.route('/newPurchase', methods=['POST'])
 def new_purchase():
@@ -26,7 +27,7 @@ def new_purchase():
     info = get_form_responses(formNames)
     errorCode = check_responses(info)
     if(errorCode):
-        ERROR_CODE.append(errorCode)
+        ERROR_CODE['account'].append(errorCode)
         return redirect('/')
     
     date, payType, cardName, amount = info[0], info[1], info[2], info[3]
@@ -44,14 +45,21 @@ def new_purchase():
 
 @app.route('/view')
 def view_data():
-    if(len(ERROR_CODE['view']) == '0'): 
+    if(len(ERROR_CODE['view']) == 0): 
         return render_template("view.html")
+    code = ERROR_CODE['view'][0]
     ERROR_CODE['view'].clear()
-    return render_template("view.html", error=ERROR_CODE['view'][0])
+    return render_template("view.html", error=code)
 
 @app.route('/chart', methods=['POST'])
 def output_chart():
-    print(request.form['startDate'])
+    startDate = request.form['startDate']
+    endData = map(int, request.form['endDate'].split('-'))
+    if(not(check_time(endData, startDate))):
+        ERROR_CODE['view'].append('Start Date is after the End Date')
+        return redirect('/view')
+
+    ERROR_CODE['view'].append('Making chart for: ' + startDate + ' to ' + request.form['endDate'])
     return redirect(request.referrer)
 
 def insert_value(value):
@@ -72,7 +80,8 @@ def check_responses(responses):
         return "Wrong Date"
     
     nowTime = time.localtime()
-    if(not(check_time(nowTime, responses[0]))):
+    rowTime = (nowTime.tm_year, nowTime.tm_mon, nowTime.tm_mday)
+    if(not(check_time(rowTime, responses[0]))):
         return "Date is After Today"
     if(responses[2] == ""):
         return "Wrong Card"
@@ -86,7 +95,7 @@ def check_responses(responses):
 
 def check_time(newTime, givenTime):
     gYear, gMonth, gDay = map(int, givenTime.split('-'))
-    rYear, rMonth, rDay = newTime.tm_year, newTime.tm_mon, newTime.tm_mday
+    rYear, rMonth, rDay = newTime
 
     if(gYear > rYear):
         return False

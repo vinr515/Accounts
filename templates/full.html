@@ -45,6 +45,7 @@
 	{% if error %}
 		Error: {{ error }}
 	{% endif %}
+	<a href="/view"><button>View Expenses</button></a>
 	<form action="/newPurchase" method="post">
 		<label for="purchaseDate">Date</label> 
 		<input type="date" id="purchaseDate" name="purchaseDate">
@@ -69,7 +70,7 @@
 		<input type="number" id="amount" name="amount" step=".01">
 		</br></br></br>
 
-		<label for="description">Description</label>
+		<label align="top" for="description">Description</label>
 		<textarea id="description" name="description" rows="5" cols="50"></textarea>
 		</br>
 		
