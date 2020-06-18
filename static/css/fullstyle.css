@@ -1,6 +1,5 @@
 body {
-	margin-left: 500px;
-	margin-top: 50px;
+	margin: 50px 500px;
 }
 
 #description {
@@ -9,4 +8,19 @@ body {
 
 .entry {
 	margin-left: 25px;
+}
+
+h1 {
+	font-size: 40px;
+	text-align:center;
+}
+
+h2 {
+	font-size: 30px;
+	color: red;
+	text-align: center;
+}
+
+p {
+	font-size: 30px;
 }

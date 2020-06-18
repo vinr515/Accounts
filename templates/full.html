@@ -51,8 +51,9 @@
 <body onload="setCategories();">
 	<h1><strong>Accounts</strong></h1>
 	{% if error %}
-		Error: {{ error }}
+		<h2><strong>Error:</strong> {{ error }}</h2>
 	{% endif %}
+	</br>
 	<form action="/newPurchase" method="post">
 		<label for="purchaseDate">Date</label> 
 		<input type="date" id="purchaseDate" name="purchaseDate" class="entry">
