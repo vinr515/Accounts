@@ -53,14 +53,35 @@ def view_data():
 
 @app.route('/chart', methods=['POST'])
 def output_chart():
-    startDate = request.form['startDate']
-    endData = map(int, request.form['endDate'].split('-'))
-    if(not(check_time(endData, startDate))):
+    startDate = map(int, request.form['startDate'].split('-'))
+    endDate = map(int, request.form['endDate'].split('-'))
+    if(not(check_time(startDate, endDate))):
         ERROR_CODE['view'].append('Start Date is after the End Date')
         return redirect('/view')
 
-    ERROR_CODE['view'].append('Making chart for: ' + startDate + ' to ' + request.form['endDate'])
-    return redirect(request.referrer)
+    goodRows = get_purchases(request.form['startDate'], request.form['endDate'])
+    return send_chart(goodRows)
+    #return redirect(request.referrer)
+
+@app.route('/sendchart', methods=['GET'])
+def send_chart(goodRows):
+    breakdown, totalSum = {}, 0
+    for i in goodRows:
+        if(i[-1] in breakdown):
+            breakdown[i[-1]] += i[5]
+        else:
+            breakdown[i[-1]] = i[5]
+        totalSum += i[5]
+
+    totalSum = round(totalSum, 2)
+    finalBreakdown = []
+    for i in breakdown:
+        part = str(round((breakdown[i]/totalSum)*100, 2))
+        finalBreakdown.append((i, part))
+        
+    return render_template('chart.html', length=len(finalBreakdown),
+                           chartData=finalBreakdown, total=totalSum,
+                           numPurchases=len(goodRows))
 
 def insert_value(value):
     conn = sqlite3.connect('accounts.db')
@@ -81,7 +102,8 @@ def check_responses(responses):
     
     nowTime = time.localtime()
     rowTime = (nowTime.tm_year, nowTime.tm_mon, nowTime.tm_mday)
-    if(not(check_time(rowTime, responses[0]))):
+    gDate = map(int, responses[0].split('-'))
+    if(not(check_time(gDate, rowTime))):
         return "Date is After Today"
     if(responses[2] == ""):
         return "Wrong Card"
@@ -93,8 +115,8 @@ def check_responses(responses):
         return "Wrong Category"
     return ""
 
-def check_time(newTime, givenTime):
-    gYear, gMonth, gDay = map(int, givenTime.split('-'))
+def check_time(givenTime, newTime):
+    gYear, gMonth, gDay = givenTime
     rYear, rMonth, rDay = newTime
 
     if(gYear > rYear):
@@ -117,3 +139,17 @@ def check_float(num):
         return True
     except ValueError:
         return False
+
+def get_purchases(startDate, endDate):
+    conn = sqlite3.connect('accounts.db')
+    c = conn.cursor()
+    goodDates = []
+    startDate = list(map(int, startDate.split('-')))
+    endDate = list(map(int, endDate.split('-')))
+    for i in c.execute('''SELECT * FROM expenses'''):
+        timeTuple = (i[0], i[1], i[2])
+        if(check_time(startDate, timeTuple) and check_time(timeTuple, endDate)):
+            goodDates.append(i)
+
+    conn.close()
+    return goodDates

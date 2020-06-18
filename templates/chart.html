@@ -1,0 +1,46 @@
+<html>
+<head>
+	<script language="Javascript">
+		function otherThing(){
+			var b = [];
+			
+			{% for i in range(0, length) %}
+				var categoryTag = document.getElementById({{ i*2 }});
+				var priceTag = document.getElementById({{ i*2+1 }});
+				var category = categoryTag.innerHTML;
+				var price = priceTag.innerHTML;
+				
+				var newThing = {y: price, label: category};
+				b = b.concat(newThing);
+			{% endfor %}
+			pieChart(b);
+		}
+		
+		function pieChart(b){
+			var chartTitle = {text: "Example Pie Chart"};
+			var dataSettings = [{type: "pie", startAngle: 240,
+							indexLabel: "{label} {y}",
+							dataPoints: b}];
+			var chart = new CanvasJS.Chart("chartC", {
+				animationEnabled: true,
+				title: chartTitle,
+				data: dataSettings});
+			chart.render();
+		}
+	</script>
+</head>
+
+<body onload="otherThing();">
+<p> Total Sum: ${{ total }} </p></br>
+<p> Number of Purchases: {{ numPurchases }} </p></br>
+<ul hidden="true">
+{% for i in range(0, length) %}
+	<li id={{ i*2 }}>{{ chartData[i][0] }}</li>
+	<li id={{ i*2+1 }}>{{ chartData[i][1] }}</li>
+	</br>
+{% endfor %}
+</ul>
+<div id="chartC" ></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
