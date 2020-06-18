@@ -8,7 +8,7 @@ def hello_world():
 
 """Git Instructions
 git init
-git remote add origin https://github.com/vinr515/Accounts.git
+git remote add origin (link to github repo).git
 
 git add hello.py
 git commit -m "First commit!"
