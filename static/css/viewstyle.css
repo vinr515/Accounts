@@ -2,12 +2,12 @@ body {
 	margin: 50px 500px;
 }
 
-#description {
-	vertical-align: text-top;
+#startDate {
+	margin-left: 25px;
 }
 
-.entry {
-	margin-left: 25px;
+#endDate {
+	margin-left: 45px;
 }
 
 h1 {

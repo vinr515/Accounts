@@ -1,19 +1,28 @@
 <html>
 <head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/viewstyle.css') }}">
+	
 </head>
 
 <body>
+	<h1><strong>View</strong></h1>
 	{% if error %}
-		Error: {{ error }}
+		<h2><strong>Error:</strong> {{ error }}</h2>
 	{% endif %}
 	<form action="/chart" method="POST">
 		<label for="startDate">From: </label>
 		<input type="date" id="startDate" name="startDate">
-		</br>
+		</br></br>
 		
 		<label for="endDate">To: </label>
 		<input type="date" id="endDate" name="endDate">
-		</br>
+		</br></br>
 		
 		<button type="submit" id="enter">Enter</button>
 	</form>

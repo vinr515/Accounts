@@ -53,6 +53,9 @@ def view_data():
 
 @app.route('/chart', methods=['POST'])
 def output_chart():
+    if(request.form['startDate'] == '' or request.form['endDate'] == ''):
+        ERROR_CODE['view'].append('One or both dates are not there')
+        return redirect('/view')
     startDate = map(int, request.form['startDate'].split('-'))
     endDate = map(int, request.form['endDate'].split('-'))
     if(not(check_time(startDate, endDate))):
@@ -61,7 +64,6 @@ def output_chart():
 
     goodRows = get_purchases(request.form['startDate'], request.form['endDate'])
     return send_chart(goodRows)
-    #return redirect(request.referrer)
 
 @app.route('/sendchart', methods=['GET'])
 def send_chart(goodRows):
@@ -73,11 +75,12 @@ def send_chart(goodRows):
             breakdown[i[-1]] = i[5]
         totalSum += i[5]
 
-    totalSum = round(totalSum, 2)
+    allSum = round(totalSum, 2)
     finalBreakdown = []
     for i in breakdown:
-        part = str(round((breakdown[i]/totalSum)*100, 2))
-        finalBreakdown.append((i, part, breakdown[i]))
+        part = str(round((breakdown[i]/allSum)*100, 2))
+        finalBreakdown.append((i, part, "{:0.2f}".format(breakdown[i])))
+    totalSum = "{:0.2f}".format(totalSum)
         
     return render_template('chart.html', length=len(finalBreakdown),
                            chartData=finalBreakdown, total=totalSum,
