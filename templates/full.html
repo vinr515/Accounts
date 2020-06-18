@@ -1,5 +1,12 @@
 <html>
 <head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fullstyle.css') }}">
 	<script language="Javascript">
 		function payCash(){
 			replaceCards(['No Card (Cash)']);
@@ -42,24 +49,24 @@
 </head>
 
 <body onload="setCategories();">
+	<h1><strong>Accounts</strong></h1>
 	{% if error %}
 		Error: {{ error }}
 	{% endif %}
-	<a href="/view"><button>View Expenses</button></a>
 	<form action="/newPurchase" method="post">
 		<label for="purchaseDate">Date</label> 
-		<input type="date" id="purchaseDate" name="purchaseDate">
+		<input type="date" id="purchaseDate" name="purchaseDate" class="entry">
 		</br>
 
 		<label for="type">Type</label>
-		<input type="radio" id="Cash" name="type" value="Cash" onchange="payCash();">Cash
-		<input type="radio" id="Check" name="type" value="Check" onchange="payCheck();" checked>Check
-		<input type="radio" id="Credit" name="type" value="Credit" onchange="payCredit();">Credit
-		<input type="radio" id="Debit" name="type" value="Debit" onchange="payDebit();">Debit
+		<input type="radio" id="Cash" name="type" value="Cash" onchange="payCash();" class="entry">   Cash
+		<input type="radio" id="Check" name="type" value="Check" onchange="payCheck();" class="entry" checked>   Check
+		<input type="radio" id="Credit" name="type" value="Credit" onchange="payCredit();" class="entry">    Credit
+		<input type="radio" id="Debit" name="type" value="Debit" onchange="payDebit();" class="entry">    Debit
 		</br>
 
 		<label for="cardName" id="cardLabel">Check Bank</label>
-		<select id="cardName" name="cardName">
+		<select id="cardName" name="cardName" class="entry">
 			<option value=""></option>
 			<option value="AA">AA</option>
 			<option value="BB">BB</option>
@@ -67,20 +74,21 @@
 		</br>
 		
 		<label for="amount">Amount</label>
-		<input type="number" id="amount" name="amount" step=".01">
+		<input type="number" id="amount" name="amount" step=".01" class="entry">
 		</br></br></br>
 
 		<label align="top" for="description">Description</label>
-		<textarea id="description" name="description" rows="5" cols="50"></textarea>
+		<textarea id="description" name="description" rows="5" cols="50" class="entry"></textarea>
 		</br>
 		
 		<label for="category">Category</label>
-		<select id="category" name="category">
+		<select id="category" name="category" class="entry">
 		</select>
 		</br>
 		
 		<button type="submit">Enter</button>
 	</form>
+	<a href="/view"><button>View Expenses</button></a>
 	
 	<script language="Javascript">
 		function renameLabel(newText){

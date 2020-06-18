@@ -77,7 +77,7 @@ def send_chart(goodRows):
     finalBreakdown = []
     for i in breakdown:
         part = str(round((breakdown[i]/totalSum)*100, 2))
-        finalBreakdown.append((i, part))
+        finalBreakdown.append((i, part, breakdown[i]))
         
     return render_template('chart.html', length=len(finalBreakdown),
                            chartData=finalBreakdown, total=totalSum,

@@ -2,25 +2,28 @@
 <head>
 	<script language="Javascript">
 		function otherThing(){
-			var b = [];
+			var data = [];
 			
 			{% for i in range(0, length) %}
-				var categoryTag = document.getElementById({{ i*2 }});
-				var priceTag = document.getElementById({{ i*2+1 }});
+				var categoryTag = document.getElementById({{ i*3 }});
+				var priceTag = document.getElementById({{ i*3+1 }});
+				var sumTag = document.getElementById({{ i*3+2 }});
 				var category = categoryTag.innerHTML;
 				var price = priceTag.innerHTML;
+				var catSum = sumTag.innerHTML;
 				
-				var newThing = {y: price, label: category};
-				b = b.concat(newThing);
+				var newThing = {y: price, label: category,
+							sum: catSum};
+				data = data.concat(newThing);
 			{% endfor %}
-			pieChart(b);
+			pieChart(data);
 		}
 		
-		function pieChart(b){
+		function pieChart(data){
 			var chartTitle = {text: "Example Pie Chart"};
-			var dataSettings = [{type: "pie", startAngle: 240,
-							indexLabel: "{label} {y}",
-							dataPoints: b}];
+			var dataSettings = [{type: "pie", startAngle: 0,
+							indexLabel: "{label} {y}% (${sum})",
+							dataPoints: data}];
 			var chart = new CanvasJS.Chart("chartC", {
 				animationEnabled: true,
 				title: chartTitle,
@@ -31,16 +34,17 @@
 </head>
 
 <body onload="otherThing();">
-<p> Total Sum: ${{ total }} </p></br>
-<p> Number of Purchases: {{ numPurchases }} </p></br>
-<ul hidden="true">
-{% for i in range(0, length) %}
-	<li id={{ i*2 }}>{{ chartData[i][0] }}</li>
-	<li id={{ i*2+1 }}>{{ chartData[i][1] }}</li>
-	</br>
-{% endfor %}
-</ul>
-<div id="chartC" ></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<p> Total Sum: ${{ total }} </p></br>
+	<p> Number of Purchases: {{ numPurchases }} </p></br>
+	<ul hidden="true">
+		{% for i in range(0, length) %}
+			<li id={{ i*3 }}>{{ chartData[i][0] }}</li>
+			<li id={{ i*3+1 }}>{{ chartData[i][1] }}</li>
+			<li id={{ i*3+2 }}>{{ chartData[i][2] }}</li>
+			</br>
+		{% endfor %}
+	</ul>
+	<div id="chartC" ></div>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>

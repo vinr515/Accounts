@@ -1,0 +1,12 @@
+body {
+	margin-left: 500px;
+	margin-top: 50px;
+}
+
+#description {
+	vertical-align: text-top;
+}
+
+.entry {
+	margin-left: 25px;
+}
