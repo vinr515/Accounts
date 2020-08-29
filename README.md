@@ -1,14 +1,25 @@
 # Accounts
 This lets you track your expenses. 
-### Starting (in command prompt)
-1. cd into the directory
-2. set FLASK_APP=accountPage.py
-3. python -m flask run
+### Starting (flask)
+1. `cd Accounts`
+2. `export FLASK_APP=app/accountPage.py`
+3. `python -m flask run`
 4. and go to [127.0.0.1:5000](http://127.0.0.1:5000)
 
-The [first page](http://127.0.0.1:5000) lets you add new expenses to the database. It keeps track of the date, how you paid, the amount, the type of expense, and a short description. 
+### Starting (python)
+1. `cd Accounts`
+2. `python app/accountPage.py`
+3. and go to [0.0.0.0:5000](http://0.0.0.0:5000)
 
-The [view page](http://127.0.0.1:5000/view) shows you a pie chart of your expenses between two dates, broken down by category. It also shows the total amount spent in that time, and the number of purchases
+### Starting (docker)
+1. `cd Accounts`
+2. `docker build . -t accounts`
+3. `docker run -itdp 5000:5000 --name accounts accounts`
+4. and go to [0.0.0.0:5000](http://0.0.0.0:5000)
+
+The first page lets you add new expenses to the database. It keeps track of the date, how you paid, the amount, the type of expense, and a short description. 
+
+The view page (`url/view`) shows you a pie chart of your expenses between two dates, broken down by category. It also shows the total amount spent in that time, and the number of purchases
 
 ### Screenshots
 
